@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Sorter</title>
+</head>
+<body>
+    <h1>Сортировка изображений по цветам</h1>
+    <form method="post" enctype="multipart/form-data">
+        <label for="folder">Введите путь к папке с изображениями:</label>
+        <input type="text" id="folder" name="folder" required><br><br>
+
+        <label for="sort_type">Выберите вид сортировки:</label>
+        <select id="sort_type" name="sort_type" required>
+            <option value="spectrum">По спектру</option>
+            <option value="top_n">Топ N</option>
+        </select><br><br>
+
+        <div id="top_n_options" style="display: none;">
+            <label for="color_type">Выберите цвет:</label>
+            <select id="color_type" name="color_type">
+                <option value="red">Красный</option>
+                <option value="orange">Оранжевый</option>
+                <option value="yellow">Желтый</option>
+                <option value="green">Зеленый</option>
+                <option value="cyan">Голубой</option>
+                <option value="blue">Синий</option>
+                <option value="purple">Фиолетовый</option>
+            </select><br><br>
+
+            <label for="max_color_num">Введите количество изображений:</label>
+            <input type="number" id="max_color_num" name="max_color_num" min="1"><br><br>
+        </div>
+
+        <button type="submit">Сортировать</button>
+    </form>
+
+    <script>
+        const sortTypeSelect = document.getElementById('sort_type');
+        const topNOptions = document.getElementById('top_n_options');
+
+        sortTypeSelect.addEventListener('change', function() {
+            if (this.value === 'top_n') {
+                topNOptions.style.display = 'block';
+            } else {
+                topNOptions.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

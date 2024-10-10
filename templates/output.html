@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Отсортированные изображения</title>
+    <style>
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat({{ images_per_row }}, {{ image_size }}px);
+            grid-gap: 10px;
+        }
+        .image-grid img {
+            width: {{ image_size }}px;
+            height: {{ image_size }}px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Отсортированные изображения</h1>
+    <div class="image-grid">
+        {% for image in images %}
+        <img src="{{ image }}">
+        {% endfor %}
+    </div>
+</body>
+</html>

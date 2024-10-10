@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сортированные изображения</title>
+    <style>
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .image-item {
+            text-align: center;
+        }
+        img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Сортированные изображения</h1>
+    <div class="image-grid">
+        {% for image in images %}
+        <div class="image-item">
+            <img src="{{ image.path }}" alt="Image">
+            <p>Цвет: {{ image.rgb }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

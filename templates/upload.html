@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Загрузка изображений</title>
+</head>
+<body>
+    <h1>Загрузите изображения</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="files[]" multiple required><br><br>
+        <label>Метод сортировки:</label><br>
+        <input type="radio" name="sorting_method" value="spectrum" checked onchange="toggleTopN(false)"> По спектру<br>
+        <input type="radio" name="sorting_method" value="top_n" onchange="toggleTopN(true)"> Топ N по цвету<br><br>
+        <div id="top_n_options" style="display: none;">
+            <label>Преобладающий цвет (для Топ N):</label><br>
+            <select name="dominant_color">
+                <option value="Красный">Красный</option>
+                <option value="Оранжевый">Оранжевый</option>
+                <option value="Желтый">Желтый</option>
+                <option value="Зеленый">Зеленый</option>
+                <option value="Голубой">Голубой</option>
+                <option value="Синий">Синий</option>
+                <option value="Фиолетовый">Фиолетовый</option>
+            </select><br><br>
+            <label>Количество N (для Топ N):</label><br>
+            <input type="number" name="top_n" value="5"><br><br>
+        </div>
+        <label>Количество изображений в строке:</label><br>
+        <input type="number" name="images_per_row" value="5"><br><br>
+        <label>Размер изображений (px):</label><br>
+        <input type="number" name="image_size" value="100"><br><br>
+        <input type="submit" value="Предпросмотр">
+    </form>
+    <script>
+        function toggleTopN(show) {
+            document.getElementById('top_n_options').style.display = show ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
