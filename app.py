@@ -5,6 +5,7 @@ from PIL import Image
 import numpy as np
 import shutil
 import colorsys
+import base64
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
@@ -162,7 +163,6 @@ def upload_files():
                                images_per_row=images_per_row, image_size=image_size)
     return render_template('upload.html')
 
-
 # Маршрут для генерации и скачивания HTML-страницы
 @app.route('/generate', methods=['POST'])
 def generate_html():
@@ -170,21 +170,27 @@ def generate_html():
     image_size = int(request.form.get('image_size', 100))
     image_filenames = request.form.get('image_filenames').split(',')
 
-    # Копируем изображения в OUTPUT_FOLDER
-    shutil.rmtree(app.config['OUTPUT_FOLDER'])
-    os.makedirs(app.config['OUTPUT_FOLDER'])
+
+    images_base64 = []
+
     for image in image_filenames:
-        shutil.copy(os.path.join(app.config['PREVIEW_FOLDER'], image),
-                    os.path.join(app.config['OUTPUT_FOLDER'], image))
+        image_path = os.path.join(app.config['PREVIEW_FOLDER'], image)
+        with open(image_path, 'rb') as img_file:
+            encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
+            # Определяем MIME-тип
+            mime_type = 'image/jpeg'  # Мы сохраняем все изображения в формате JPEG
+            data_uri = f"data:{mime_type};base64,{encoded_string}"
+            images_base64.append(data_uri)
 
     # Создаем HTML-код
-    html_content = render_template('output.html', images=image_filenames,
+    html_content = render_template('output.html', images=images_base64,
                                    images_per_row=images_per_row, image_size=image_size)
-    output_path = os.path.join(app.config['OUTPUT_FOLDER'], 'output.html')
-    with open(output_path, 'w', encoding='utf-8') as f:
+    output_html_path = os.path.join(app.config['OUTPUT_FOLDER'], 'output.html')
+    with open(output_html_path, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    return send_file(output_path, as_attachment=True)
 
+    # Отправляем HTML-файл для скачивания
+    return send_file(output_html_path, as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
