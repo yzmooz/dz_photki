@@ -3,30 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Предпросмотр изображений</title>
+    <!-- Подключаем Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        body {
+            padding-top: 50px;
+        }
         .image-grid {
             display: grid;
             grid-template-columns: repeat({{ images_per_row }}, {{ image_size }}px);
             grid-gap: 10px;
+            justify-content: center;
         }
         .image-grid img {
             width: {{ image_size }}px;
             height: {{ image_size }}px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .container {
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>Предпросмотр отсортированных изображений</h1>
-    <div class="image-grid">
-        {% for image in images %}
-        <img src="{{ url_for('static', filename='preview/' + image) }}">
-        {% endfor %}
+    <div class="container">
+        <h1>Предпросмотр отсортированных изображений</h1>
+        <div class="image-grid">
+            {% for image in images %}
+            <img src="{{ url_for('static', filename='preview/' + image) }}">
+            {% endfor %}
+        </div>
+        <form action="/generate" method="post" class="mt-4">
+            <input type="hidden" name="images_per_row" value="{{ images_per_row }}">
+            <input type="hidden" name="image_size" value="{{ image_size }}">
+            <input type="hidden" name="image_filenames" value="{{ ','.join(images) }}">
+            <button type="submit" class="btn btn-success">Сгенерировать и скачать HTML-страницу</button>
+        </form>
     </div>
-    <form action="/generate" method="post">
-        <input type="hidden" name="images_per_row" value="{{ images_per_row }}">
-        <input type="hidden" name="image_size" value="{{ image_size }}">
-        <input type="hidden" name="image_filenames" value="{{ ','.join(images) }}">
-        <input type="submit" value="Сгенерировать и скачать HTML-страницу">
-    </form>
 </body>
 </html>
