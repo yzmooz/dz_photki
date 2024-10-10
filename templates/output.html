@@ -8,18 +8,27 @@
             display: grid;
             grid-template-columns: repeat({{ images_per_row }}, {{ image_size }}px);
             grid-gap: 10px;
+            justify-content: center;
         }
         .image-grid img {
             width: {{ image_size }}px;
             height: {{ image_size }}px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        body {
+            padding-top: 50px;
+            text-align: center;
+            font-family: Arial, sans-serif;
         }
     </style>
 </head>
 <body>
     <h1>Отсортированные изображения</h1>
     <div class="image-grid">
-        {% for image in images %}
-        <img src="{{ image }}">
+        {% for image_data_uri in images %}
+        <img src="{{ image_data_uri }}">
         {% endfor %}
     </div>
 </body>
